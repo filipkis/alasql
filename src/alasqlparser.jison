@@ -1423,7 +1423,14 @@ ElseClause
 		{ $$ = $2; }
 	| 
 		{ $$ = undefined; } 
-	; 
+	;
+
+ArrowOrDot
+    : ARROW
+        { $$ = undefined; }
+    | DOT
+        { $$ = undefined; }
+    ;
 
 Op
 	: Expression REGEXP Expression
@@ -1462,13 +1469,13 @@ Op
 	| Expression BAR Expression
 		{ $$ = new yy.Op({left:$1, op:'|', right:$3}); }
 
-	| Expression ARROW Literal
+	| Expression ArrowOrDot Literal
 		{ $$ = new yy.Op({left:$1, op:'->' , right:$3}); }
-	| Expression ARROW NumValue
+	| Expression ArrowOrDot NumValue
 		{ $$ = new yy.Op({left:$1, op:'->' , right:$3}); }
-	| Expression ARROW LPAR Expression RPAR
+	| Expression ArrowOrDot LPAR Expression RPAR
 		{ $$ = new yy.Op({left:$1, op:'->' , right:$4}); }
-	| Expression ARROW FuncValue
+	| Expression ArrowOrDot FuncValue
 		{ $$ = new yy.Op({left:$1, op:'->' , right:$3}); }
 
 	| Expression EXCLAMATION Literal
